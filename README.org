@@ -1,0 +1,15 @@
+* TODO find leak
+  - GB large leak for some reason
+  - growing with time
+  - often plateau around 1.5GB (33% of my 4GB)
+  
+* TODO lift jQuery requirement
+  uses:
+    $("#...").val()         // dom input field value
+    $("#...").prop(...)     // dom input radio value ?
+    $("#...").keydown(...)  // dom ui event
+    
+  -> Can reimplement these in a fake $ object
+  
+* TODO thin refactor
+  can avoid that large main logic function
