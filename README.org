@@ -1,4 +1,4 @@
-* TODO find leak
+* TODO [#A] find leak
   - GB large leak for some reason
   - growing with time
   - often plateau around 1.5GB (33% of my 4GB)
@@ -16,13 +16,17 @@
    Either the log buffer really occupies GB or ram, or the console keeps pointers
    to copies of the bookmark tree that cannot be GCd.
 
-* TODO lift jQuery requirement
+** DONE First user test
+   [2016-02-04 Thu]
+   no more GB large chromium subprocess, looking good.
+
+* TODO [#C] lift jQuery requirement
   uses:
     $("#...").val()         // dom input field value
     $("#...").prop(...)     // dom input radio value ?
     $("#...").keydown(...)  // dom ui event
-    
+
   -> Can reimplement these in a fake $ object
-  
-* TODO thin refactor
+
+* TODO [#B] thin refactor
   can avoid that large main logic function
