@@ -1,4 +1,18 @@
-* TODO find leak
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:nil d:(not "LOGBOOK") date:t e:t
+#+OPTIONS: email:nil f:t inline:t num:t p:nil pri:nil prop:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t title:t toc:t todo:t |:t
+#+TITLE: Tabvention, push tabs to bookmarks passed a threshold.
+#+DATE: <2016-02-04 Thu>
+#+AUTHOR: Johan PONIN
+#+EMAIL: johan.ponin.pro@gmail.com
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 24.5.1 (Org mode 8.3.3)
+
+* TODO [#A] find leak
+
   - GB large leak for some reason
   - growing with time
   - often plateau around 1.5GB (33% of my 4GB)
@@ -6,9 +20,11 @@
 ** Potential culprit : chrome.bookmarks.getTree |> log
 
    So far, the only 'large' related line of code is this one:
-   ```
+
+   #+BEGIN_SRC javascript
    chrome.bookmarks.getTree(function(bookmarks) { console.log(bookmark); })
-   ```
+   #+END_SRC
+
    IIUC, it's logging the whole bookmark tree (db) to the console on each tab creation.
    Depending on the user bookmarks and tab creation, it might accumulate a fair
    share of thing in this buffer.
@@ -16,13 +32,23 @@
    Either the log buffer really occupies GB or ram, or the console keeps pointers
    to copies of the bookmark tree that cannot be GCd.
 
-* TODO lift jQuery requirement
+** DONE First user test
+
+   [2016-02-04 Thu]
+   no more GB large chromium subprocess, looking good.
+
+* TODO [#C] lift jQuery requirement
+
   uses:
+
+  #+BEGIN_SRC javascript
     $("#...").val()         // dom input field value
     $("#...").prop(...)     // dom input radio value ?
     $("#...").keydown(...)  // dom ui event
-    
+  #+END_SRC
+
   -> Can reimplement these in a fake $ object
-  
-* TODO thin refactor
+
+* TODO [#B] thin refactor
+
   can avoid that large main logic function
