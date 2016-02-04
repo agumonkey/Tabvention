@@ -2,7 +2,20 @@
   - GB large leak for some reason
   - growing with time
   - often plateau around 1.5GB (33% of my 4GB)
-  
+
+** Potential culprit : chrome.bookmarks.getTree |> log
+
+   So far, the only 'large' related line of code is this one:
+   ```
+   chrome.bookmarks.getTree(function(bookmarks) { console.log(bookmark); })
+   ```
+   IIUC, it's logging the whole bookmark tree (db) to the console on each tab creation.
+   Depending on the user bookmarks and tab creation, it might accumulate a fair
+   share of thing in this buffer.
+
+   Either the log buffer really occupies GB or ram, or the console keeps pointers
+   to copies of the bookmark tree that cannot be GCd.
+
 * TODO lift jQuery requirement
   uses:
     $("#...").val()         // dom input field value
