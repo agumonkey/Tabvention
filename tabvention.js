@@ -79,13 +79,9 @@ var make_today_folder = function () {
 };
 
 var tab_to_bookmark = function (tab) {
-    var m = {
-	parentId : localStorage.dateFolderId,
-	title: tab[x].title,
-	url: tab[x].url
-    };
-    chrome.bookmarks.create(m);
-    chrome.tabs.remove(tab.id)
+    var pid = localStorage.dateFolderId;
+    chrome.bookmarks.create({title: tab.title, url: tab.url, parentId: pid});
+    chrome.tabs.remove(tab.id);
 };
 
 // UI
