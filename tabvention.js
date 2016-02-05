@@ -51,8 +51,10 @@ function fileAwayDemTabs(newTab)
     }
 }
 
+// get-or-create root "Tabvention" bookmark folder
+//+ make_today_folder :: () -> IO (tabvFolderId) (bookmark)
+// TODO this should be unrelated to result
 var make_tabv_folder = function(results) {
-    // get-or-create "Tabvention": ensure existence of a root Tabvention bookmark folder
     // no results -> create a bookmark folder
     // store the first bookmark in localStorage
     if(results.length == 0) {
@@ -64,17 +66,17 @@ var make_tabv_folder = function(results) {
     }
 };
 
+//+ make_today_folder :: () -> IO (dateFolderId, dateFolderTitle) -> (bookmark)
+// get-or-create bookmark folder for the day
 var make_today_folder = function () {
-    // get-or-create bookmark folder for the day
+    var ls = localStorage;
     var now = moment().format('MMMM Do, YYYY');
-    if (localStorage.dateFolderId == null
-	|| localStorage.dateFolderTitle != now) {
-	var F = function(currentDateFolder) {
-	    localStorage.dateFolderId = currentDateFolder.id;
-	    localStorage.dateFolderTitle = currentDateFolder.title;
+    if (ls.dateFolderId == null || ls.dateFolderTitle != now) {
+	var store = function(todayFolder) {
+	    ls.dateFolderId = todayFolder.id;
+	    ls.dateFolderTitle = todayFolder.title;
 	};
-	var m = {parentId : localStorage.tabvFolderId, title: now};
-	chrome.bookmarks.create(m, F);
+	chrome.bookmarks.create({title: now, parentId : ls.tabvFolderId}, store);
     }
 };
 
